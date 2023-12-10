@@ -1,0 +1,4 @@
+telethon
+pyperclip
+pywin32
+pillow
