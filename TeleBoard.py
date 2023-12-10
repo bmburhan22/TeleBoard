@@ -3,6 +3,7 @@ from os.path import abspath
 from telethon import TelegramClient
 from os import getenv, remove
 from sys import argv
+import webbrowser
 from win32clipboard import CF_HDROP, IsClipboardFormatAvailable, OpenClipboard as opencb, GetClipboardData as getcb, CloseClipboard as closecb
 from PIL import ImageGrab
 
@@ -35,7 +36,10 @@ async def main():
     if not filepaths:
         msg = (await client.get_messages(chat_id))[0]
         copy(abspath(await msg.download_media(dl_dir+'/')) if msg.file else msg.text)
-
+        try:
+            webbrowser.open('file://%s'%abspath(dl_dir))
+        except:
+            print('dl_dir open error')
     elif '-s' not in filepaths: 
         await send_files(filepaths)
     elif IsClipboardFormatAvailable(CF_HDROP):
