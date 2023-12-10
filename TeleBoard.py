@@ -35,11 +35,14 @@ async def main():
         
     if not filepaths:
         msg = (await client.get_messages(chat_id))[0]
-        copy(abspath(await msg.download_media(dl_dir+'/')) if msg.file else msg.text)
-        try:
-            webbrowser.open('file://%s'%abspath(dl_dir))
-        except:
-            print('dl_dir open error')
+        if msg.file:
+            copy(abspath(await msg.download_media(dl_dir+'/')))
+            try:
+                webbrowser.open('file://%s'%abspath(dl_dir))
+            except:
+                print('dl_dir open error')
+        else:
+            copy(msg.text)
     elif '-s' not in filepaths: 
         await send_files(filepaths)
     elif IsClipboardFormatAvailable(CF_HDROP):
